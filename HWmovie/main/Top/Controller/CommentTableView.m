@@ -9,7 +9,7 @@
 #import "CommentTableView.h"
 #import "common.h"
 #import "CommentTableViewCell.h"
-
+#import "UIViewExt.h"
 #import "UIImageView+WebCache.h"
 @implementation CommentTableView
 
@@ -19,6 +19,9 @@
     self=[super initWithFrame:frame style:style];
     
     if (self) {
+        
+        _temp=-1;
+
         
         
         self.delegate=self;
@@ -62,10 +65,10 @@
     UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc]init];
     
     layout.itemSize=CGSizeMake(kwidth/4, 90);
-    layout.minimumLineSpacing=10;
+    layout.minimumLineSpacing=0;
     layout.minimumInteritemSpacing=0;
     layout.scrollDirection= UICollectionViewScrollDirectionHorizontal;
-    layout.sectionInset=UIEdgeInsetsMake(0, 10, 0, 10);
+    layout.sectionInset=UIEdgeInsetsMake(0, 0, 0, 0);
     
     
     _headerCollectonView=[[CommentHeaderCollectionView alloc]initWithFrame:CGRectMake(5, 155, kwidth-10, 90)collectionViewLayout:layout];
@@ -207,108 +210,73 @@
     
     
     //复用要把变化的改过来
-    UILabel *laber2=(UILabel *)[cell viewWithTag:100    ];
-    if (isHit[indexPath.row])
+    UILabel *laber2=(UILabel *)[cell viewWithTag:100];
+    UIImageView *imageView=(UIImageView *)[cell viewWithTag:200];
+   
+    if (indexPath.row==_temp)
     {
         
-        
-        
-        
-        
-        laber2.numberOfLines=0;
-         laber2.frame=CGRectMake(82, 30, 166, cell.frame.size.height-30);
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.2];
+        if (_isHit==YES) {
+            imageView.height=cell.height-2;
+            laber2.height=cell.height-28;
+
+        }
+        else
+        {
+            imageView.height=48;
+            laber2.height=22;
+        }
+        [UIView commitAnimations];
     }
     else
     {
-        
-  
-        laber2.numberOfLines=1;
-        laber2.frame=CGRectMake(82, 30, 166,22 ) ;
-        
+        imageView.height=48;
+        laber2.height=22;
     }
-
+    
     return cell;
-    
-    
+
 }
 
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if (isHit[indexPath.row]) {
+    if (_isHit==YES&&indexPath.row==_temp) {
         
         CommentModal *modal=_commentModalArray[indexPath.row];
-        CGFloat maxLabelWidth =kwidth-200;
+        CGFloat maxLabelWidth =kwidth-136;
         NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
         CGSize contenSize = [modal.content boundingRectWithSize:CGSizeMake(maxLabelWidth, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil].size;
-        
-          return contenSize.height+30;
+        //NSLog(@"%f",contenSize.height+30-0.281);
+          return contenSize.height+30-0.281;
     }
     else
     {
         return 50;
         
     }
-  
-
-
-
-
-
 }
+
+
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
- 
-    CommentTableViewCell *cell=( CommentTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    UILabel *laber=(UILabel *)   [cell.contentView viewWithTag:100    ];
-  
-    
-    CGFloat maxLabelWidth =kwidth-200;
-    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
-   // NSLog(@"%@",laber.text);
-    
-      CGSize contenSize = [laber.text boundingRectWithSize:CGSizeMake(maxLabelWidth, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil].size;
-    
-    //NSLog(@"%f", contenSize.height);
+//    isHit[indexPath.row]=!isHit[indexPath.row];
     
     
-    if (isHit[indexPath.row])
-    {
-        
-        laber.numberOfLines=1;
-     laber.frame=CGRectMake(82, 30, 166, 22);
+    if (_temp==indexPath.row) {
+        _isHit=!_isHit;
     }
     else
     {
-        laber.numberOfLines=0;
-     
-        laber.frame=CGRectMake(82, 30, 166, contenSize.height) ;
-        
-
+        _isHit=YES;
+        _temp=indexPath.row;
     }
-    
-      isHit[indexPath.row]=!isHit[indexPath.row];
-    
+  
     [tableView reloadData];
-    
-    
-    
-//    CGFloat maxLabelWidth =kwidth-140;
-//    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:18]};
-//    CGSize contenSize = [_message.content boundingRectWithSize:CGSizeMake(maxLabelWidth, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil].size;
-    
-    
-    
-   // [self tableView:self   heightForRowAtIndexPath:indexPath];
-    
-
-    
-    
-    
-    
-    
 }
 
 

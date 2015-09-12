@@ -133,6 +133,8 @@
         NSString *string= dic[@"url"];
     
     
+    NSLog(@"%@",string);
+    
         MPMoviePlayerViewController *ctrl = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL URLWithString:string]];
     
         //将视频播放器弹出

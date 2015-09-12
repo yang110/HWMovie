@@ -33,16 +33,56 @@
     self.window.rootViewController=myTabBar;
     
     
-    
+//
     
 //    StartViewController *vc=[[StartViewController alloc]init];
 //    self.window.rootViewController=vc;
 //    
+//    
     
     
     
-//    BeginViewController     *vc=[[BeginViewController alloc]init];
-//    self.window.rootViewController=vc;
+    
+    
+    
+    
+    
+    //01 获取沙盒路径
+//    NSString *homePath=NSHomeDirectory();
+//    //02 NSString类关于 路径操作
+//    NSString *documentsPath=[homePath stringByAppendingPathComponent:@"Documents"];
+//    //单例方法(有则给他，没有则创建)
+//    NSFileManager *manager=[NSFileManager defaultManager];
+//    
+//    
+//    NSString *fliePath=[documentsPath   stringByAppendingPathComponent:@"file.text"];
+//    //检查文件是否存在
+//    BOOL  sucess=[manager fileExistsAtPath:fliePath];
+//    
+//    if (sucess) {
+//        NSLog(@"文件存在");
+//        
+//        
+//        
+//       
+//        StartViewController     *myTabBar=[[ StartViewController   alloc]init];
+//      self.window.rootViewController=myTabBar;
+//        
+//        
+//       
+//    }
+//    else
+//    {
+//        NSLog(@"文件不存在，创建");
+//        [manager createFileAtPath:fliePath contents:nil attributes:nil];
+//        BeginViewController     *vc=[[BeginViewController alloc]init];
+//        self.window.rootViewController=vc;
+//        
+//
+//        
+//    }
+    
+    
     
     
     return YES;

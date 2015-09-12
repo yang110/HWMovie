@@ -52,28 +52,59 @@
 -(void)loadData
 {
     
-    NSDictionary *dic=[DataService loadData1:@"top250"];
-    
-    NSArray *array=dic[@"subjects"];
-    
-    _array=[[NSMutableArray alloc]init];
     
     
-    for (NSDictionary *dic1 in array )
-    {
-        TopModal *modal=[[TopModal alloc]init];
+  _array=[[NSMutableArray alloc]init];
+    
+    
+    NSMutableDictionary *params= [[NSMutableDictionary  alloc]init];
+    NSMutableDictionary *data=[[NSMutableDictionary alloc]init];
+    
+    
+    [DataService requestAFUrl:@"top250" httpMethod:@"GET" params:params datas:data block:^(id result) {
+       
+        
+         NSDictionary *dic=result;
+         NSArray *array=dic[@"subjects"];
+        
+        for (NSDictionary *dic1 in array )
+        {
+            TopModal *modal=[[TopModal alloc]init];
+            [modal setValuesForKeysWithDictionary:dic1];
+            [_array addObject:modal];
+            
+        }
+        [ collectionView reloadData];
         
         
-        
-        [modal setValuesForKeysWithDictionary:dic1];
-        
-        
-        [_array addObject:modal];
-        
-    }
+    }];
     
     
     
+    //方法二
+    
+//    NSDictionary *dic=[DataService loadData1:@"top250"];
+//    
+//    NSArray *array=dic[@"subjects"];
+//    
+//    _array=[[NSMutableArray alloc]init];
+//    
+//    
+//    for (NSDictionary *dic1 in array )
+//    {
+//        TopModal *modal=[[TopModal alloc]init];
+//        
+//        
+//        
+//        [modal setValuesForKeysWithDictionary:dic1];
+//        
+//        
+//        [_array addObject:modal];
+//        
+//    }
+//    
+//    
+//    
     
 }
 

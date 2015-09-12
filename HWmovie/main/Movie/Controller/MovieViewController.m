@@ -50,7 +50,6 @@
     //对 viewController 延伸(不透明了 要加下面那句话 给延长   透明了就不用写下面那句话了)
     //self.edgesForExtendedLayout=UIRectEdgeAll;
 
-    
     //对tableView (必须是viewController的第一个视图)进行移动
     self.automaticallyAdjustsScrollViewInsets=YES;
     
@@ -62,34 +61,80 @@
 {
     
     
-    
- 
-    //直接把文件里的数据 解析放到数组或字典里
-    NSDictionary *dicData=[DataService loadData1:@"us_box"];
-    
-    
-    NSArray *subjects=[dicData objectForKey:@"subjects"];
     _modelArray =[[NSMutableArray alloc]init];
     
     
+       NSMutableDictionary *params= [[NSMutableDictionary  alloc]init];
+        NSMutableDictionary *data=[[NSMutableDictionary alloc]init];
     
-    for (int i=0; i<subjects.count; i++) {
+    
+        [DataService requestAFUrl:@"us_box" httpMethod:@"GET" params:params datas:data block:^(id result) {
+    //        NSLog(@"%@",result);
+    
+         NSDictionary *dicData=result;
+    
+       NSArray *subjects=[dicData objectForKey:@"subjects"];
+    
+    
+          for (int i=0; i<subjects.count; i++) {
+    
+              NSDictionary *dic2=subjects[i][@"subject"];
+    
+    
+              MovieModel *model=[[MovieModel alloc]init];
+    
+              model.title=dic2[@"title"];
+              model.year = dic2[@"year"];
+              model.images=dic2[@"images"];
+              model.average =[dic2[@"rating"][@"average"] floatValue];
+              model.original_title=dic2[@"original_title"];
+    
+    
+              [_modelArray addObject:model];
+    
+    
+          }
+    
         
-        NSDictionary *dic2=subjects[i][@"subject"];
-        
-        
-        MovieModel *model=[[MovieModel alloc]init];
-        
-        model.title=dic2[@"title"];
-        model.year = dic2[@"year"];
-        model.images=dic2[@"images"];
-        model.average =[dic2[@"rating"][@"average"] floatValue];
-        model.original_title=dic2[@"original_title"];
-        
-        [_modelArray addObject:model];
-        
-        
-    }
+            [_movieTableView reloadData];
+            [_posterView.indexCollectionView reloadData ];
+            [_posterView.collectionView reloadData];
+    
+    
+    
+    
+    
+        }];
+    
+    
+    //    //方法二 同步
+    //
+    //直接把文件里的数据 解析放到数组或字典里
+//    NSDictionary *dicData=[DataService loadData1:@"us_box"];
+//    
+//    
+//    NSArray *subjects=[dicData objectForKey:@"subjects"];
+//    
+//    
+//    
+//    
+//    for (int i=0; i<subjects.count; i++) {
+//        
+//        NSDictionary *dic2=subjects[i][@"subject"];
+//        
+//        
+//        MovieModel *model=[[MovieModel alloc]init];
+//        
+//        model.title=dic2[@"title"];
+//        model.year = dic2[@"year"];
+//        model.images=dic2[@"images"];
+//        model.average =[dic2[@"rating"][@"average"] floatValue];
+//        model.original_title=dic2[@"original_title"];
+//        
+//        [_modelArray addObject:model];
+//        
+//        
+//    }
 }
 
 -(void)createNav

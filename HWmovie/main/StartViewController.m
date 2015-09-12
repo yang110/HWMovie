@@ -11,11 +11,14 @@
 #import "MyTabBarController.h"
 @interface StartViewController ()
 {
-    int kkk;
+    int kkk;//重复调用时候
     
-    CGFloat kkkkWidth;
-    CGFloat kkkkHeight;
-    int k;
+    CGFloat kkkkWidth;//小图 的 宽
+    CGFloat kkkkHeight;//小图 的 高
+    int k;//图片名字 初始化为1
+    
+    
+    int temp;//总共 小图 数
     
 }
 @end
@@ -35,6 +38,121 @@
 }
 
 
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+     self.view.backgroundColor=[UIColor whiteColor];
+    
+    
+    //可变这两个数字 来改变效果
+    int maxWidth=5;
+    int maxHeight=5;
+    
+    //算法 绕圈
+    [self createCircleWithMaxWidth: maxWidth andmaxHeight:maxHeight ];
+    
+    //效果
+    [self start];
+    
+}
+
+
+
+
+-(void) createCircleWithMaxWidth:(int) maxWidth andmaxHeight:(int )maxHeight
+{
+    
+    kkkkWidth=self.view.width/maxWidth;
+    kkkkHeight=self.view.height/maxHeight;
+
+    
+    _array=[[NSMutableArray alloc]init];
+    
+    k=1;// [self create:i and:j];里面有用
+    
+    
+    
+    int minWidth=-1;//第一次循环最小左边
+    int minHeight=0;//第一次循环最小上边
+    
+    
+    int i=0;//当前要加的图的坐标
+    int j=0;//当前要加的图的坐标
+    
+    int num=0;//当前加的 图的数目  ==temp时 退出循环
+    
+    temp=maxHeight*maxWidth;//总共 小图 数
+    
+    
+    
+    while (1)
+    {
+        
+        //第一圈
+        for ( ; j<maxWidth; j++,num++)
+        {
+            [self create:i and:j];
+        }
+        j--;
+        i++;
+        
+        if (num==temp)
+            break;
+        
+        for (  ; i<maxHeight;  i++,num++)
+        {
+            [self create:i and:j];
+        }
+        i--;
+        j--;
+        
+        if (num==temp)
+            break;
+        
+        for (   ; j>minWidth; j--,num++) {
+            [self create:i and:j];
+        }
+        j++;
+        i--;
+        
+        if (num==temp)
+            break;
+        
+        for (; i>minHeight; i--,num++) {
+            [self create:i and:j];
+        }
+        i++;
+        j++;
+        
+        if (num==temp)
+            break;
+        
+        
+        //第二圈
+        
+        maxWidth--;
+        maxHeight--;
+        minWidth++;
+        minHeight++;
+        
+        
+        
+        
+        
+    }
+    
+    
+    
+    
+    
+    //额外添加一张 为了最后一张图显示出来
+    [self create:7 and:7 ];
+    
+    
+}
+
 -(void)create:(int )i and:(int )j
 {
     
@@ -43,113 +161,10 @@
     
     imageView.frame=CGRectMake(kkkkWidth*j, kkkkHeight*i,kkkkWidth ,kkkkHeight );
     
-    
-    
-    
-    
     [_array addObject:imageView];
     [self.view addSubview:imageView];
     
     imageView.alpha=0;
-
-}
-
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    
-    self.view.backgroundColor=[UIColor whiteColor];
-    
-    _array=[[NSMutableArray alloc]init];
-        k=1;
-     kkkkWidth=self.view.width/4;
-     kkkkHeight=self.view.height/6;
-    
-    
-    
-
-//    for (int i=0; i<6; i++)
-//    {
-//        for (int j=0; j<4; j++)
-//        {
-//            UIImageView *imageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed: [NSString stringWithFormat:@"%d",k++]]];
-//            
-//            
-//            imageView.frame=CGRectMake(kkkkWidth*j, kkkkHeight*i,kkkkWidth ,kkkkHeight );
-//            
-//            
-//            
-//            
-//            
-//            [_array addObject:imageView];
-//            [self.view addSubview:imageView];
-//            
-//            imageView.alpha=0;
-//            
-//        }
-//    }
-//    
-//
-    int i=0;
-    int j=0;
-    for (j=0; j<4; j++)
-    {
-        [self create:i and:j];
-    }
-    j--;
-    
-    i++;
-    for (  ; i<6;  i++)
-    {
-        [self create:i and:j];
-    }
-    i--;
-    
-    j--;
-    for (; j>-1; j--) {
-        [self create:i and:j];
-    }
-    j++;
-    i--;
-    for (; i>0; i--) {
-        [self create:i and:j];
-    }
-    i++;
-    j++;
-    
-    for (; j<3; j++) {
-        [self create:i and:j];
-    }
-
-    j--;
-    i++;
-    
-    for (; i<5  ; i++) {
-        [self create:i and:j];
-    }
-    
-    i--;
-    j--;
-    
-    for (; j>0; j--) {
-        [self create:i and:j];
-        
-    }
-    
-    j++;
-    i--;
-    for (; i>1; i--) {
-        [self create:i and:j];
-    }
-    
-    //额外添加一张 为了最后一张图显示出来
-    [self create:7 and:7 ];
-    
-    
-    
-
-    [self start];
     
 }
 
@@ -162,7 +177,7 @@
     
     kkk++;
     
-    if (kkk==25) {
+    if (kkk==temp+1) {
         
         //  01 获取主窗口方法一
        // UIWindow *window=[UIApplication sharedApplication].keyWindow;
@@ -195,13 +210,6 @@
     
     
 }
-
-
-
-
-
-
-
 
 
 

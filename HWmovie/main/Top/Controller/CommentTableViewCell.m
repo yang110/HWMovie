@@ -19,15 +19,26 @@
     
   //  self.backgroundColor=[UIColor redColor];
     
-    UILabel *laber2=[[UILabel alloc]initWithFrame:CGRectMake(82, 30, 166, 22) ];
+    UILabel *laber2=[[UILabel alloc]initWithFrame:CGRectMake(73, 30, 230, 22) ];
    // laber2.backgroundColor=[UIColor redColor];
     laber2.tag=100;
    // laber2.backgroundColor=[UIColor orangeColor];
-    laber2.textColor=[UIColor whiteColor];
+     laber2.numberOfLines=0;
+    laber2.textColor=[UIColor blackColor];
     
     [self.contentView addSubview:laber2];
     
+    _imageView1.layer.cornerRadius=10;
+    _imageView1.layer.borderWidth=1;
+     _imageView1.layer.borderColor=[UIColor whiteColor].CGColor;
+    _imageView1.layer.masksToBounds=YES;
+
     
+    
+    _imageView2.layer.cornerRadius=10;
+    _imageView2.layer.borderWidth=1;
+    _imageView2.layer.borderColor=[UIColor whiteColor].CGColor;
+    _imageView2.layer.masksToBounds=YES;
     
     
     

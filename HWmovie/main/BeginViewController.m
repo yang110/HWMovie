@@ -41,6 +41,8 @@
     height=self.view.bounds.size.height;
     
     
+
+    
     
     
     _scrollView=[[UIScrollView alloc]initWithFrame:self.view.bounds];

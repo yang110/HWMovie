@@ -15,10 +15,6 @@
     
     UIView *_headerView;
     IndexCollectionView *_indexCollectionView;
-    
-    
-    
-    
    PosterCollectionView *_collectionView;
     
     
@@ -27,7 +23,8 @@
     UIControl *_coverView;
     
 }
-
+@property (nonatomic) IndexCollectionView *indexCollectionView;
+@property (nonatomic)  PosterCollectionView *collectionView;
 @property (nonatomic) NSArray *modalArray;
 
 

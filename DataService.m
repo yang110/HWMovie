@@ -7,11 +7,13 @@
 //
 
 #import "DataService.h"
-
+#import "AFNetworking.h"
 @implementation DataService
 
 + (id)loadData1:(NSString *)string
 {
+    
+
     NSString *string1=[NSString stringWithFormat:@"https://api.douban.com/v2/movie/%@",string];
     
     //01 构建url
@@ -56,10 +58,133 @@
     NSString *path=[[NSBundle mainBundle] pathForResource:string ofType:nil];
     NSData *data=[NSData dataWithContentsOfFile:path];
     id arrayOrDic=[NSJSONSerialization JSONObjectWithData:data options: NSJSONReadingMutableContainers error:nil];
-
+    
+    
+    
+    
+    
     
     return arrayOrDic;
 }
+
++(void)requestAFUrl:(NSString *)urlString
+         httpMethod:(NSString *)method
+             params:(NSMutableDictionary *)params
+              datas:(NSMutableDictionary *)dicData
+              block:(BlcokType)block
+{
+    
+    
+    NSString *fullUrlString=[@"https://api.douban.com/v2/movie/" stringByAppendingString:urlString];
+    
+    
+    
+    
+    AFHTTPRequestOperationManager *manager=[AFHTTPRequestOperationManager manager];
+    
+    manager.responseSerializer=[AFJSONResponseSerializer serializer];
+    
+    
+    if ([method isEqualToString:@"GET"])
+    {
+        
+        
+        
+        [manager GET:fullUrlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            NSLog(@"上传成功");
+            block(responseObject);
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            
+            NSLog(@"失败");
+        }];
+        
+        
+        
+        
+    }
+    else if( [method isEqualToString:@"POST"])
+    {
+        if (dicData !=nil) {
+            
+            
+            
+            AFHTTPRequestOperation *operation=[manager POST:fullUrlString parameters:params     constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                
+                
+                for (NSString *name in dicData)
+                {
+                    NSData *data=dicData[name];
+                    [formData appendPartWithFileData:data name:name fileName:@"1.png" mimeType:@"image/jpeg"];
+                    
+                    
+                }
+                
+            } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+                NSLog(@"上传成功");
+                block(responseObject);
+                
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"失败");
+                
+            }];
+            
+            
+            //监控下载
+            [operation setDownloadProgressBlock:^void(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead  ) {
+                NSLog(@"下载 %li  %lld %lld",bytesRead,totalBytesRead,totalBytesExpectedToRead);
+            }];
+            
+            //监控上传
+            [operation setUploadProgressBlock:^void(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+                NSLog(@"上传 %li %lld  %lld",bytesWritten,totalBytesWritten,totalBytesExpectedToWrite);
+                
+            }];
+            
+            
+        }
+        else
+        {
+            AFHTTPRequestOperation *operation=[manager POST:fullUrlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"上传成功");
+                block(responseObject);
+                
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"失败");
+            }];
+            
+            
+            
+            //监控下载
+            [operation setDownloadProgressBlock:^void(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead  ) {
+                NSLog(@"下载 %li  %lld %lld",bytesRead,totalBytesRead,totalBytesExpectedToRead);
+            }];
+            
+            //监控上传
+            [operation setUploadProgressBlock:^void(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+                NSLog(@"上传 %li %lld  %lld",bytesWritten,totalBytesWritten,totalBytesExpectedToWrite);
+                
+            }];
+            
+            
+            
+        }
+        
+    }
+    
+    
+    
+    
+    
+    
+}
+
+
 
 
 @end

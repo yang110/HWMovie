@@ -139,8 +139,15 @@
     
     
     //先创建 后赋值  所以只能放这
-    MovieModel *modal=_modalArray[0];
-    _bottomlabel.text=modal.title;
+    
+    if (_modalArray.count==0) {
+           _bottomlabel.text=@"";
+    }
+    else
+    {
+        MovieModel *modal=_modalArray[0];
+        _bottomlabel.text=modal.title;
+    }
     
 }
 

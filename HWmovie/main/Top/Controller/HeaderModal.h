@@ -21,7 +21,7 @@
 
 
 
-@property (nonatomic) NSArray *videos;//暂时不用
+@property (nonatomic) NSArray *videos;//
 
 
 @end
